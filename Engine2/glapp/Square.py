@@ -1,5 +1,5 @@
 from .Mesh import *
-
+from OpenGL.GL import *
 class Square(Mesh):
     def __init__(self, program_id, location):
         vertices = [[0.5, 0.5, -1.0], [0.5, -0.5, -1.0], [-0.5, -0.5, -1.0], [-0.5, 0.5, -1.0]]

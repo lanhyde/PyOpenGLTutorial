@@ -5,6 +5,8 @@ from glapp.pyOGLapp import *
 import numpy as np
 from glapp.Utils import *
 from glapp.Axes import *
+from glapp.Cube import *
+from glapp.LoadMesh import *
 
 vertex_shader = r'''
 #version 330 core
@@ -43,13 +45,16 @@ class ProjectionSample(PyOGLApp):
         self.square = None
         self.triangle = None
         self.axes = None
-
+        self.cube = None
+        self.monkey = None
     def initialize(self):
         self.program_id = create_program(vertex_shader, fragment_shader)
         self.square = Square(self.program_id, pygame.Vector3(-1, 1, 0))
         self.triangle = Triangle(self.program_id, pygame.Vector3(0.5, -0.5, 0))
         self.camera = Camera(self.program_id, self.screenSize.x, self.screenSize.y)
         self.axes = Axes(self.program_id, pygame.Vector3(0, 0, 0))
+        self.cube = Cube(self.program_id, pygame.Vector3(0, 0, 0))
+        self.monkey = LoadMesh("models/suzanne.obj", self.program_id, location=pygame.Vector3(0, 1, 0), scale=pygame.Vector3(3, 3, 3), rotation=Rotation(45, pygame.Vector3(1, 0, 1)))
         glEnable(GL_DEPTH_TEST)
 
     def camera_init(self):
@@ -60,7 +65,9 @@ class ProjectionSample(PyOGLApp):
         glUseProgram(self.program_id)
         self.camera.update()
         self.axes.draw()
-        self.square.draw()
-        self.triangle.draw()
+        # self.square.draw()
+        # self.triangle.draw()
+        # self.cube.draw()
+        self.monkey.draw()
 
 ProjectionSample().mainloop()

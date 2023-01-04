@@ -54,5 +54,10 @@ class Camera:
         lookat.load()
 
     def rotate(self, yaw, pitch):
-        self.transformation = rotate(self.transformation, yaw, "y")
-        self.transformation = rotate(self.transformation, pitch, "x")
+        forward = pygame.Vector3(self.transformation[0, 2], self.transformation[1, 2], self.transformation[2, 2])
+        up = pygame.Vector3(0, 1, 0)
+        angle = forward.angle_to(up)
+
+        self.transformation = rotate(self.transformation, yaw, "y", False)
+        if angle < 170.0 and pitch > 0 or angle > 30.0 and pitch < 0:
+            self.transformation = rotate(self.transformation, pitch, "x")

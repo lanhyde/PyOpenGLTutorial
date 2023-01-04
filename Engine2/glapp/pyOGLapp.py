@@ -12,7 +12,9 @@ class PyOGLApp():
         pygame.init()
         pygame.display.gl_set_attribute(pygame.GL_MULTISAMPLEBUFFERS, 1)
         pygame.display.gl_set_attribute(pygame.GL_MULTISAMPLESAMPLES, 4)
+        # this line may cause issues on Windows, set it on Mac only
         pygame.display.gl_set_attribute(pygame.GL_CONTEXT_PROFILE_MASK, pygame.GL_CONTEXT_PROFILE_CORE)
+        pygame.display.gl_set_attribute(pygame.GL_DEPTH_SIZE, 32)
         self.screen = pygame.display.set_mode((screenSize.x, screenSize.y), DOUBLEBUF | OPENGL)
         pygame.display.set_caption('OpenGL in Python')
         self.camera = None

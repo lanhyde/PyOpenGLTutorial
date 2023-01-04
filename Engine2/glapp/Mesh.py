@@ -4,8 +4,11 @@ from .GraphicsData import *
 from .Uniform import *
 import numpy as np
 from .Transformations import *
+
 class Mesh:
-    def __init__(self, program_id, vertices, vertex_colors, draw_type, translation=pygame.Vector3(0, 0, 0)):
+    def __init__(self, program_id, vertices, vertex_colors, draw_type, translation=pygame.Vector3(0, 0, 0),
+                 rotation=Rotation(0, pygame.Vector3(0, 1, 0)),
+                 scale=pygame.Vector3(1, 1, 1)):
         self.vertices = vertices
         self.draw_type = draw_type
         self.vao_ref = glGenVertexArrays(1)
@@ -15,6 +18,8 @@ class Mesh:
         colors = GraphicsData("vec3", vertex_colors)
         colors.create_variable(program_id, "vertex_color")
         self.transformation_mat = identity_mat()
+        self.transformation_mat = scale3(self.transformation_mat, scale.x, scale.y, scale.z)
+        self.transformation_mat = rotateAround(self.transformation_mat, rotation.angle, rotation.axis)
         self.transformation_mat = translate(self.transformation_mat, translation.x, translation.y, translation.z)
         self.transformation = Uniform("mat4", self.transformation_mat)
         self.transformation.find_variable(program_id, "model_mat")

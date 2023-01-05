@@ -6,13 +6,15 @@ import numpy as np
 from .Transformations import *
 
 class Mesh:
-    def __init__(self, program_id, vertices, vertex_colors, draw_type, translation=pygame.Vector3(0, 0, 0),
+    def __init__(self, program_id, vertices, vertex_normals, vertex_uvs, vertex_colors, draw_type, translation=pygame.Vector3(0, 0, 0),
                  rotation=Rotation(0, pygame.Vector3(0, 1, 0)),
                  scale=pygame.Vector3(1, 1, 1),
                  move_rotation=Rotation(0, pygame.Vector3(0, 1, 0)),
                  move_translate=pygame.Vector3(0, 0, 0),
                  move_scale=pygame.Vector3(1, 1, 1)):
         self.vertices = vertices
+        self.vertex_normals = vertex_normals
+        self.vertex_uvs = vertex_uvs
         self.draw_type = draw_type
         self.vao_ref = glGenVertexArrays(1)
         glBindVertexArray(self.vao_ref)

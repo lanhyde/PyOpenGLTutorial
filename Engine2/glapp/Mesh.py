@@ -22,6 +22,9 @@ class Mesh:
         position.create_variable(program_id, "position")
         colors = GraphicsData("vec3", vertex_colors)
         colors.create_variable(program_id, "vertex_color")
+        normals = GraphicsData("vec3", self.vertex_normals)
+        normals.create_variable(program_id, "vertex_normal")
+
         self.transformation_mat = identity_mat()
         self.transformation_mat = scale3(self.transformation_mat, scale.x, scale.y, scale.z)
         self.transformation_mat = rotateAround(self.transformation_mat, rotation.angle, rotation.axis)

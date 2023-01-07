@@ -18,9 +18,9 @@ class LoadMesh(Mesh):
         vertex_uvs = format_vertices(uvs, uv_indices)
         colors = []
         for i in range(len(vertices)):
-            colors.append(random.random())
-            colors.append(random.random())
-            colors.append(random.random())
+            colors.append(1)
+            colors.append(1)
+            colors.append(1)
         super().__init__(program_id, vertices, vertex_normals, vertex_uvs,  colors, draw_type, location, rotation, scale, move_rotation, move_translate, move_scale)
 
     def load_drawing(self, filename):

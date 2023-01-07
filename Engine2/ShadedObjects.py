@@ -37,8 +37,12 @@ in vec3 fragpos;
 in vec3 view_pos;
 out vec4 frag_color;
 
-#define NUM_LIGHTS 2
-uniform vec3 light_pos[NUM_LIGHTS];
+struct light {
+    vec3 position;
+    vec3 color;
+};
+#define NUM_LIGHTS 3
+uniform light light_data[NUM_LIGHTS];
 
 vec4 createLight(vec3 light_pos, vec3 light_color, vec3 normal, vec3 fragpos, vec3 view_dir) {
     // ambient
@@ -60,7 +64,9 @@ vec4 createLight(vec3 light_pos, vec3 light_color, vec3 normal, vec3 fragpos, ve
 
 void main() {
     vec3 view_dir = normalize(view_pos - fragpos);
-    frag_color = createLight(light_pos[0], vec3(1, 0, 0), normal, fragpos, view_dir);
+    for(int i = 0; i < NUM_LIGHTS; i++) {
+        frag_color += createLight(light_data[i].position, light_data[i].color, normal, fragpos, view_dir);
+    }
 }
 '''
 
@@ -69,12 +75,16 @@ class ShadedObjects(PyOGLApp):
     def __init__(self):
         super().__init__(pygame.Vector2(850, 200), pygame.Vector2(1000, 800))
         self.light = None
+        self.light2 = None
+        self.light3 = None
         self.monkey = None
     def initialize(self):
         self.program_id = create_program(vertex_shader, fragment_shader)
         self.camera = Camera(self.program_id, self.screenSize.x, self.screenSize.y)
         self.monkey = LoadMesh("models/suzanne.obj", self.program_id, GL_TRIANGLES, location=pygame.Vector3(0, -1, 2), move_rotation=Rotation(2, pygame.Vector3(1, 1, -1)))
-        self.light = Light(self.program_id, pygame.Vector3(2, 1, 2), 0)
+        self.light = Light(self.program_id, pygame.Vector3(2, 1, 2), pygame.Vector3(1, 0, 0), 0)
+        self.light2 = Light(self.program_id, pygame.Vector3(-2, 1, -2), pygame.Vector3(0, 1, 0), 1)
+        self.light3 = Light(self.program_id, pygame.Vector3(0, 1, 0), pygame.Vector3(0, 0, 1), 2)
         glEnable(GL_DEPTH_TEST)
 
     def camera_init(self):
@@ -85,6 +95,8 @@ class ShadedObjects(PyOGLApp):
         glUseProgram(self.program_id)
         self.camera.update()
         self.light.update()
+        self.light2.update()
+        self.light3.update()
         self.monkey.draw()
 
 ShadedObjects().mainloop()

@@ -6,12 +6,13 @@ from .Utils import format_vertices
 
 
 class LoadMesh(Mesh):
-    def __init__(self, filename, texture_name, program_id, draw_type=GL_TRIANGLES, location=pygame.Vector3(0, 0, 0),
+    def __init__(self, filename, texture_name, draw_type=GL_TRIANGLES, location=pygame.Vector3(0, 0, 0),
                  rotation=Rotation(0, pygame.Vector3(0, 1, 0)),
                  scale=pygame.Vector3(1, 1, 1),
                  move_rotation=Rotation(0, pygame.Vector3(0, 1, 0)),
                  move_translate=pygame.Vector3(0, 0, 0),
-                 move_scale=pygame.Vector3(1, 1, 1)):
+                 move_scale=pygame.Vector3(1, 1, 1),
+                 material=None):
         coordinates, triangles, uvs, uv_indices, normals, normal_indices = self.load_drawing(filename)
         vertices = format_vertices(coordinates, triangles)
         vertex_normals = format_vertices(normals, normal_indices)
@@ -21,7 +22,7 @@ class LoadMesh(Mesh):
             colors.append(1)
             colors.append(1)
             colors.append(1)
-        super().__init__(program_id, vertices, texture_name, vertex_normals, vertex_uvs,  colors, draw_type, location, rotation, scale, move_rotation, move_translate, move_scale)
+        super().__init__(vertices, texture_name, vertex_normals, vertex_uvs,  colors, draw_type, location, rotation, scale, move_rotation, move_translate, move_scale, material)
 
     def load_drawing(self, filename):
         vertices = []
